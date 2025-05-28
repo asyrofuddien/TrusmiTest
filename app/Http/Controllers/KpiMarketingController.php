@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class KpiMarketingController extends Controller
 {
-    public function index()
+    public function soal1()
     {
         $data = DB::select("
             -- Variabel tetap
@@ -32,7 +32,7 @@ class KpiMarketingController extends Controller
                     kc.Nama,
                     kc.Sales_Actual,
                     v.targetKPI AS Sales_Target,
-                    ROUND(kc.Sales_Actual / NULLIF(v.targetKPI, 0), 2) AS Sales_Pencapaian,
+                    ROUND(kc.Sales_Actual / NULLIF(v.targetKPI, 0)*100) AS Sales_Pencapaian,
                     v.BobotKPI AS Bobot_Sales,
                     ROUND(GREATEST(v.targetKPI - kc.Sales_Actual, 0) * v.lateSales) AS Late_Sales,
                     ROUND((v.BobotKPI * ROUND(kc.Sales_Actual / NULLIF(v.targetKPI, 0), 2)) -
@@ -46,7 +46,7 @@ class KpiMarketingController extends Controller
                     kc.Nama,
                     kc.Report_Actual,
                     v.targetKPI AS Report_Target,
-                    ROUND(kc.Report_Actual / NULLIF(v.targetKPI, 0), 2) AS Report_Pencapaian,
+                    ROUND(kc.Report_Actual / NULLIF(v.targetKPI, 0)*100) AS Report_Pencapaian,
                     v.BobotKPI AS Bobot_Report,
                     ROUND(GREATEST(v.targetKPI - kc.Report_Actual, 0) * v.lateReport) AS Late_Report,
                     ROUND((v.BobotKPI * ROUND(kc.Report_Actual / NULLIF(v.targetKPI, 0), 2)) -
@@ -57,31 +57,32 @@ class KpiMarketingController extends Controller
 
             -- Gabungkan hasil Sales & Report berdasarkan nama
             SELECT
-                s.Nama,
-
-                -- Sales Section
-                s.Sales_Target,
-                s.Sales_Actual,
-                CONCAT(ROUND(s.Sales_Pencapaian * 100), '%') AS Sales_Pencapaian,
-                CONCAT(s.Bobot_Sales, '%') AS Bobot_Sales,
-                s.Late_Sales,
-                CONCAT(s.Total_Bobot_Sales, '%') AS Total_Bobot_Sales,
-
-                -- Report Section
-                r.Report_Target,
-                r.Report_Actual,
-                CONCAT(ROUND(r.Report_Pencapaian * 100), '%') AS Report_Pencapaian,
-                CONCAT(r.Bobot_Report, '%') AS Bobot_Report,
-                r.Late_Report,
-                CONCAT(r.Total_Bobot_Report, '%') AS Total_Bobot_Report,
-
-                -- Total KPI
-                CONCAT(s.Total_Bobot_Sales + r.Total_Bobot_Report, '%') AS Total_KPI
-            FROM Sales_KPI s
-            JOIN Report_KPI r ON s.Nama = r.Nama
-            ORDER BY s.Nama;
+            s.Nama,
+            s.Sales_Target,
+            s.Sales_Actual,
+            s.Sales_Pencapaian,
+            s.Bobot_Sales,
+            s.Late_Sales,
+            s.Total_Bobot_Sales,
+            r.Report_Target,
+            r.Report_Actual,
+            r.Report_Pencapaian,
+            r.Bobot_Report,
+            r.Late_Report,
+            r.Total_Bobot_Report,
+            (s.Total_Bobot_Sales + r.Total_Bobot_Report) AS Total_KPI
+        FROM Sales_KPI s
+        JOIN Report_KPI r ON s.Nama = r.Nama
+        ORDER BY s.Nama;
         ");
-        $data2 = DB::select("
+
+        $kpis = collect($data);
+
+        return view('Soal1.index', compact('kpis'));
+    }
+    public function soal2()
+    {
+        $data = DB::select("
             SELECT
             COUNT(*) AS total_tasklist,
             SUM(CASE WHEN aktual <= deadline THEN 1 ELSE 0 END) AS ontime,
@@ -91,9 +92,8 @@ class KpiMarketingController extends Controller
             FROM table_kpi_marketing;
         ");
 
-        $soal1 = collect($data);
-        $soal2 = collect($data2);
+        $kpis = collect($data);
 
-        return view('KpiMarketing.index', compact('soal1', 'soal2'));
+        return view('Soal2.index', compact('kpis'));
     }
 }
