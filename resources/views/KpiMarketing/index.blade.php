@@ -1,60 +1,17 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.app')
 
-<head>
-    <title>Data KPI Marketing</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
+@section('title', 'Rekap KPI Marketing')
 
-        table,
-        th,
-        td {
-            border: 1px solid #ddd;
-        }
+@section('content')
+<h1 class="mb-4 text-center text-[#ac1754] text-2xl font-bold">KPI Marketing</h1>
 
-        th,
-        td {
-            padding: 8px 12px;
-            text-align: center;
-        }
+<table class="table table-bordered table-striped w-full">
+    @include('KpiMarketing.table-header')
 
-        th {
-            background-color: #f53888;
-            color: white;
-        }
-    </style>
-</head>
-
-<body>
-    <h2 style="text-align:center;">Data KPI Marketing</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tasklist</th>
-                <th>KPI</th>
-                <th>Karyawan</th>
-                <th>Deadline</th>
-                <th>Aktual</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($kpis as $kpi)
-            <tr>
-                <td>{{ $kpi->id }}</td>
-                <td>{{ $kpi->tasklist }}</td>
-                <td>{{ $kpi->kpi }}</td>
-                <td>{{ $kpi->karyawan }}</td>
-                <td>{{ $kpi->deadline }}</td>
-                <td>{{ $kpi->aktual }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</body>
-
-</html>
+    <tbody>
+        @foreach ($soal1 as $kpi)
+        @include('KpiMarketing.table-row', ['kpi' => $kpi])
+        @endforeach
+    </tbody>
+</table>
+@endsection
