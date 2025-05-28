@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\KpiMarketing;
 
 class KpiMarketingController extends Controller
 {
-    public function apiIndex()
+    public function index()
     {
-        return response()->json(KpiMarketing::all());
+        $kpis = KpiMarketing::all();
+        return view('kpiMarketing.index', compact('kpis'));
     }
 }

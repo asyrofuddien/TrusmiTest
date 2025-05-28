@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/kpi-marketing', [KpiMarketingController::class, 'apiIndex']);
+Route::get('/kpi-marketing', [KpiMarketingController::class, 'index']);
