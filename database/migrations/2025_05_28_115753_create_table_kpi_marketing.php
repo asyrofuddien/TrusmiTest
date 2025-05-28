@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('table_kpi_marketing', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('tasklist', 100)->nullable();
+            $table->string('kpi', 100)->nullable();
+            $table->string('karyawan', 100)->nullable();
+            $table->date('deadline')->nullable();
+            $table->date('aktual')->nullable();
         });
     }
 
