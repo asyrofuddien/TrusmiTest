@@ -78,7 +78,15 @@ class KpiMarketingController extends Controller
 
         $kpis = collect($data);
 
-        return view('Soal1.index', compact('kpis'));
+        return view('Soal1.index', [
+            'kpis' => $kpis,
+            'chartData' => [
+                'labels' => $kpis->pluck('Nama'),
+                'sales' => $kpis->pluck('Total_Bobot_Sales'),
+                'report' => $kpis->pluck('Total_Bobot_Report'),
+                'total' => $kpis->pluck('Total_KPI'),
+            ],
+        ]);
     }
     public function soal2()
     {
@@ -92,8 +100,14 @@ class KpiMarketingController extends Controller
             FROM table_kpi_marketing;
         ");
 
-        $kpis = collect($data);
+        $kpis = collect($data)->first();;
 
-        return view('Soal2.index', compact('kpis'));
+        return view('Soal2.index', [
+            'kpis' => $kpis,
+            'chartData' => [
+                'labels' => ['Tepat Waktu', 'Terlambat'],
+                'values' => [$kpis->ontime, $kpis->late],
+            ],
+        ]);
     }
 }
