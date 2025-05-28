@@ -1,7 +1,7 @@
 
 ## 🧮 **Soal 1 – SQL Query**
 
-📄 File: [Query 1.txt](https://github.com/user-attachments/files/20492500/2.txt)
+📄 File: [Query 1.txt](https://github.com/user-attachments/files/20492499/1.txt)
 
 > Berisi perintah SQL untuk perhitungan dari table_kpi_marketing berdasarkan rule dan story di atas dengan output data seperti pada table berikut
 
@@ -9,7 +9,7 @@
 
 ## 📊 **Soal 2 – SQL Query**
 
-📄 File: [Query 2.txt](https://github.com/user-attachments/files/20492499/1.txt)
+📄 File: [Query 2.txt](https://github.com/user-attachments/files/20492500/2.txt)
 
 > Berisi perintah SQL untuk  menghitung jumlah tasklist ontime dan late sertakan persentase ontime dan latenya
 
