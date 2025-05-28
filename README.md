@@ -1,61 +1,241 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 🧮 **Soal 1 – SQL Query**
 
-## About Laravel
+📄 File: [Query 1.txt](https://github.com/user-attachments/files/20492500/2.txt)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> Berisi perintah SQL untuk perhitungan dari table_kpi_marketing berdasarkan rule dan story di atas dengan output data seperti pada table berikut
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📊 **Soal 2 – SQL Query**
 
-## Learning Laravel
+📄 File: [Query 2.txt](https://github.com/user-attachments/files/20492499/1.txt)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+> Berisi perintah SQL untuk  menghitung jumlah tasklist ontime dan late sertakan persentase ontime dan latenya
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🖼️ **Soal 3 – tampilan dashboard berupa grafik dari hasil soal nomor 1**
 
-## Laravel Sponsors
+![ERD Soal 3](https://github.com/user-attachments/assets/0e1cbea5-52fa-4e67-96c8-438d8e9e8ab7)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🧩 **Soal 4 – tampilan dashboard berupa grafik dari hasil soal nomor 2**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+![ERD Soal 4](https://github.com/user-attachments/assets/0ca58876-976f-4c05-b5ff-c10aabac1010)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🧱 **Soal 5 – Normalisasi Database**
 
-## Code of Conduct
+### 🧩 Struktur Awal (Unnormalized Form / 1NF)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```sql
+CREATE TABLE table_kpi_marketing (
+  id INT(11) NOT NULL,
+  tasklist VARCHAR(100),
+  kpi VARCHAR(100),
+  karyawan VARCHAR(100),
+  deadline DATE,
+  aktual DATE
+);
+```
 
-## Security Vulnerabilities
+🔎 **Masalah:**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+* Kolom `karyawan` berisi nama langsung → rawan duplikasi.
+* `tasklist` dan `kpi` bisa jadi entitas terpisah dengan relasi khusus.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### ✅ Normalisasi ke 1NF
+
+📌 **Sudah sesuai 1NF**, karena:
+
+* Setiap kolom mengandung nilai atomik.
+* Tidak ada array atau nested field.
+
+---
+
+### 🔁 Normalisasi ke 2NF
+
+#### 🎯 Tujuan:
+
+* Semua kolom non-primer bergantung sepenuhnya pada primary key (`id`).
+
+### 🛠️ Langkah-langkah:
+
+1. Identifikasi entitas utama: `karyawan`, `tasklist`, `kpi`.
+2. Buat tabel terpisah untuk masing-masing entitas.
+
+#### 💼 Tabel `karyawan`
+
+```sql
+CREATE TABLE karyawan (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nama VARCHAR(100) NOT NULL
+);
+```
+
+#### 🧾 Tabel `tasklist`
+
+```sql
+CREATE TABLE tasklist (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nama_tasklist VARCHAR(100) NOT NULL
+);
+```
+
+#### 📈 Tabel `kpi`
+
+```sql
+CREATE TABLE kpi (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  deskripsi VARCHAR(100) NOT NULL
+);
+```
+
+#### 🔗 Tabel Relasi `kpi_marketing`
+
+```sql
+CREATE TABLE kpi_marketing (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  tasklist_id INT,
+  kpi_id INT,
+  karyawan_id INT,
+  deadline DATE,
+  aktual DATE,
+  FOREIGN KEY (tasklist_id) REFERENCES tasklist(id),
+  FOREIGN KEY (kpi_id) REFERENCES kpi(id),
+  FOREIGN KEY (karyawan_id) REFERENCES karyawan(id)
+);
+```
+
+---
+
+### 📚 Normalisasi ke 3NF
+
+✅ **Sudah memenuhi 3NF**, karena:
+
+* Tidak ada *transitive dependency*.
+* Semua atribut non-primer hanya bergantung pada primary key masing-masing.
+---
+
+
+Soal 1
+[Query 1.txt](https://github.com/user-attachments/files/20492500/2.txt)
+
+Soal 2
+[Query 2.txt](https://github.com/user-attachments/files/20492499/1.txt)
+
+Soal 3
+![image](https://github.com/user-attachments/assets/0e1cbea5-52fa-4e67-96c8-438d8e9e8ab7)
+
+Soal 4
+![image](https://github.com/user-attachments/assets/0ca58876-976f-4c05-b5ff-c10aabac1010)
+
+Soal 5
+---
+
+### 🧩 **Struktur Awal (Unnormalized Form / 1NF):**
+
+```sql
+CREATE TABLE table_kpi_marketing (
+  id INT(11) NOT NULL,
+  tasklist VARCHAR(100),
+  kpi VARCHAR(100),
+  karyawan VARCHAR(100),
+  deadline DATE,
+  aktual DATE
+);
+```
+
+Masalah:
+
+* Field `karyawan` menyimpan nama langsung, bisa terjadi pengulangan data jika ada banyak KPI untuk karyawan yang sama.
+* `tasklist` dan `kpi` bisa memiliki keterkaitan struktural atau kategorisasi sendiri.
+
+---
+
+## 🔁 **Normalisasi ke 1NF (First Normal Form)**
+
+Sudah sesuai 1NF karena:
+
+* Setiap kolom mengandung nilai atomik (satu nilai per kolom).
+* Tidak ada array atau nested values.
+
+---
+
+## 🧱 **Normalisasi ke 2NF (Second Normal Form)**
+
+Syarat:
+
+* Harus sudah 1NF.
+* Semua kolom non-primer harus bergantung sepenuhnya pada **seluruh primary key**.
+
+Langkah:
+
+1. Identifikasi **primary key**: `id` (asumsi ini unik untuk setiap baris).
+2. Pisahkan entitas: `karyawan`, `tasklist`, `kpi`.
+
+### Rekomendasi Desain 2NF:
+
+#### 1. **Tabel `karyawan`**
+
+```sql
+CREATE TABLE karyawan (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nama VARCHAR(100) NOT NULL
+);
+```
+
+#### 2. **Tabel `tasklist`**
+
+```sql
+CREATE TABLE tasklist (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nama_tasklist VARCHAR(100) NOT NULL
+);
+```
+
+#### 3. **Tabel `kpi`**
+
+```sql
+CREATE TABLE kpi (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  deskripsi VARCHAR(100) NOT NULL
+);
+```
+
+#### 4. **Tabel `kpi_marketing` (relasi utama)**
+
+```sql
+CREATE TABLE kpi_marketing (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  tasklist_id INT,
+  kpi_id INT,
+  karyawan_id INT,
+  deadline DATE,
+  aktual DATE,
+  FOREIGN KEY (tasklist_id) REFERENCES tasklist(id),
+  FOREIGN KEY (kpi_id) REFERENCES kpi(id),
+  FOREIGN KEY (karyawan_id) REFERENCES karyawan(id)
+);
+```
+
+---
+
+## 🧹 **Normalisasi ke 3NF (Third Normal Form)**
+
+Syarat:
+
+* Harus sudah 2NF.
+* Tidak boleh ada **transitive dependency** (kolom non-primer tidak boleh bergantung ke kolom non-primer lainnya).
+
+Dengan desain di atas, sudah memenuhi 3NF, karena:
+
+* Semua kolom non-key hanya bergantung ke **primary key langsung** (tidak melalui kolom non-key lain).
+* Setiap entitas utama (karyawan, tasklist, kpi) memiliki tabel terpisah.
+
+---
